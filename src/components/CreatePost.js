@@ -19,8 +19,8 @@ export default class CreatePost extends Component {
 	handleAddPost = async (event) => {
 		event.preventDefault();
 		const input = {
-			postOwnerId: this.state.postOwnerId,
-			postOwnerUsername: this.state.postOwnerUsername,
+			postOwnerId: 'stephane98', //this.state.postOwnerId,
+			postOwnerUsername: 'Steven', //this.state.postOwnerUsername,
 			postTitle: this.state.postTitle,
 			postBody: this.state.postBody,
 			createdAt: new Date().toISOString()

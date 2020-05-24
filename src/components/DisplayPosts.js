@@ -73,7 +73,7 @@ class DisplayPosts extends Component {
 
 				for (let post of posts) {
 					if (createdComment.post.id === post.id) {
-						post.comments.items.push(createComment);
+						post.comments.items.push(createdComment);
 					}
 				}
 				this.setState({ posts });
@@ -122,7 +122,7 @@ class DisplayPosts extends Component {
 							<span style={{ fontSize: '19px', color: 'gray' }}>
 								Comments:{' '}
 							</span>
-						)}{' '}
+						)}
 						{post.comments.items.map((comment, index) => (
 							<CommentPost key={index} commentData={comment} />
 						))}

@@ -9,6 +9,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import DeletePost from './DeletePost';
 import EditPost from './EditPost';
 import { updatePost } from '../graphql/mutations';
+import CreateCommentPost from './CreateCommentPost';
 
 class DisplayPosts extends Component {
 	state = {
@@ -95,6 +96,9 @@ class DisplayPosts extends Component {
 					<span>
 						<DeletePost data={post} />
 						<EditPost {...post} />
+					</span>
+					<span>
+						<CreateCommentPost postId={post.id} />
 					</span>
 				</div>
 			);

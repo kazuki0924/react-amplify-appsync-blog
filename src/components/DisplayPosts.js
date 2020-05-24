@@ -57,8 +57,8 @@ class DisplayPosts extends Component {
 					<p>{post.postBody}</p>
 					<br />
 					<span>
+						<DeletePost data={post} />
 						<EditPost />
-						<DeletePost />
 					</span>
 				</div>
 			);

@@ -3,6 +3,7 @@ import { listPosts } from '../graphql/queries';
 import { API, graphqlOperation } from 'aws-amplify';
 import DeletePost from './DeletePost';
 import { onCreatePost } from '../graphql/subscriptions';
+import EditPost from './EditPost';
 
 class DisplayPosts extends Component {
 	state = {
@@ -56,6 +57,7 @@ class DisplayPosts extends Component {
 					<p>{post.postBody}</p>
 					<br />
 					<span>
+						<EditPost />
 						<DeletePost />
 					</span>
 				</div>

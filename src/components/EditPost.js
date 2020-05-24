@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Auth } from 'aws-amplify';
+import { Auth, graphqlOperation, API } from 'aws-amplify';
+import { updatePost } from '../graphql/mutations';
 // import { Button } from 'aws-amplify-react';
 
 export default class EditPost extends Component {
@@ -23,7 +24,17 @@ export default class EditPost extends Component {
 	};
 
 	handleUpdatePost = async (event) => {
-		event;
+		event.preventDefault();
+		const input = {
+			id: this.props.id,
+			postOwnerId: this.state.postOwnerId,
+			postOwnerUsername: this.state.postOwnerUsername,
+			postTitle: this.state.postData.postTitle,
+			postBody: this.state.postData.postBody
+		};
+
+		await API.graphql(graphqlOperation(updatePost, { input }));
+		this.setState({ show: !this.state.show });
 	};
 
 	handleTitle = (event) => {

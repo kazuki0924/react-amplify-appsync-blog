@@ -4,7 +4,8 @@ import {
 	onCreatePost,
 	onDeletePost,
 	onUpdatePost,
-	onCreateComment
+	onCreateComment,
+	onCreateLike
 } from '../graphql/subscriptions';
 import { API, graphqlOperation } from 'aws-amplify';
 import DeletePost from './DeletePost';
@@ -12,6 +13,7 @@ import EditPost from './EditPost';
 import { updatePost, createComment } from '../graphql/mutations';
 import CreateCommentPost from './CreateCommentPost';
 import CommentPost from './CommentPost';
+import { FaThumbsUp } from 'react-icons/fa';
 
 class DisplayPosts extends Component {
 	state = {
@@ -81,6 +83,22 @@ class DisplayPosts extends Component {
 		});
 	};
 
+	this.createPostLikeListener = API.graphql(graphqlOperation(onCreateLike))
+		.subscribe({
+			next: postData => {
+				const createdLike = postData.value.data.onCreateLike
+
+				let posts= [...this.state.posts]
+				for (let post of posts) {
+					if (createdLike.post.id === post.id) {
+						post.likes.items.push(createdLike)
+					}
+				}
+				this.setState({posts})
+			}
+		})
+	}
+}
 	componentWillUnmount() {
 		this.createPostListener.unsubscribe();
 		this.deletePostListener.unsubscribe();
@@ -127,6 +145,7 @@ class DisplayPosts extends Component {
 							<CommentPost key={index} commentData={comment} />
 						))}
 					</span>
+					<FaThumbsUp />
 				</div>
 			);
 		});

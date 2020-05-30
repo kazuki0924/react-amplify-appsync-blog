@@ -10,7 +10,7 @@ import {
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import DeletePost from './DeletePost';
 import EditPost from './EditPost';
-import { updatePost, createComment } from '../graphql/mutations';
+import { updatePost, createComment, createLike } from '../graphql/mutations';
 import CreateCommentPost from './CreateCommentPost';
 import CommentPost from './CommentPost';
 import { FaThumbsUp } from 'react-icons/fa';
@@ -19,6 +19,8 @@ class DisplayPosts extends Component {
 	state = {
 		ownerId: '',
 		ownerUsername: '',
+		errorMessage: '',
+		postLikedBy: [],
 		isHovering: false,
 		posts: []
 	};
@@ -139,8 +141,27 @@ class DisplayPosts extends Component {
 		return false;
 	};
 
+	handleLike = async (postId) => {
+		const input = {
+			numberLikes: 1,
+			likeOwnerId: this.state.ownerId,
+			likeOwnerUsername: this.state.ownerUsername,
+			likePostId: postId
+		};
+
+		try {
+			const result = await API.graphql(graphqlOperation(createLike, { input }));
+			console.log('Liked: ', result.data);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	render() {
 		const { posts } = this.state;
+
+		let loggedInUser = this.state.ownerId;
+
 		return posts.map((post) => {
 			return (
 				<div className="posts" style={rowStyle} key={post.id}>
@@ -156,8 +177,14 @@ class DisplayPosts extends Component {
 					<p>{post.postBody}</p>
 					<br />
 					<span>
-						<DeletePost data={post} />
-						<EditPost {...post} />
+						{post.postOwnerId === loggedInUser && <DeletePost data={post} />}
+						{post.postOwnerId === loggedInUser && <EditPost {...post} />}
+						<span>
+							<p onClick={() => this.handleLike(post.id)}>
+								<FaThumbsUp />
+								{post.likes.items.length}
+							</p>
+						</span>
 					</span>
 					<span>
 						<CreateCommentPost postId={post.id} />
@@ -170,7 +197,6 @@ class DisplayPosts extends Component {
 							<CommentPost key={index} commentData={comment} />
 						))}
 					</span>
-					<FaThumbsUp />
 				</div>
 			);
 		});

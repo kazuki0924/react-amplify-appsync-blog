@@ -4,7 +4,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { deletePost } from '../graphql/mutations';
 
 export default class DeletePost extends Component {
-	phandleDeletePost = async (postId) => {
+	handleDeletePost = async (postId) => {
 		const input = {
 			id: postId
 		};

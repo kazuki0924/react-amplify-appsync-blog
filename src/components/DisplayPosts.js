@@ -142,18 +142,24 @@ class DisplayPosts extends Component {
 	};
 
 	handleLike = async (postId) => {
-		const input = {
-			numberLikes: 1,
-			likeOwnerId: this.state.ownerId,
-			likeOwnerUsername: this.state.ownerUsername,
-			likePostId: postId
-		};
+		if (this.likedPost(postId)) {
+			return this.setState({ errorMessage: "Can't like your own post." });
+		} else {
+			const input = {
+				numberLikes: 1,
+				likeOwnerId: this.state.ownerId,
+				likeOwnerUsername: this.state.ownerUsername,
+				likePostId: postId
+			};
 
-		try {
-			const result = await API.graphql(graphqlOperation(createLike, { input }));
-			console.log('Liked: ', result.data);
-		} catch (error) {
-			console.error(error);
+			try {
+				const result = await API.graphql(
+					graphqlOperation(createLike, { input })
+				);
+				console.log('Liked: ', result.data);
+			} catch (error) {
+				console.error(error);
+			}
 		}
 	};
 
@@ -180,6 +186,10 @@ class DisplayPosts extends Component {
 						{post.postOwnerId === loggedInUser && <DeletePost data={post} />}
 						{post.postOwnerId === loggedInUser && <EditPost {...post} />}
 						<span>
+							<p className="alert">
+								{post.postOwnerId === loggedInUser &&
+									this.setState.errorMessage}
+							</p>
 							<p onClick={() => this.handleLike(post.id)}>
 								<FaThumbsUp />
 								{post.likes.items.length}

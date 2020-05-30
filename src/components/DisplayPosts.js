@@ -187,8 +187,7 @@ class DisplayPosts extends Component {
 						{post.postOwnerId === loggedInUser && <EditPost {...post} />}
 						<span>
 							<p className="alert">
-								{post.postOwnerId === loggedInUser &&
-									this.setState.errorMessage}
+								{post.postOwnerId === loggedInUser && this.state.errorMessage}
 							</p>
 							<p onClick={() => this.handleLike(post.id)}>
 								<FaThumbsUp />

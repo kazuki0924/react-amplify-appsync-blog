@@ -14,6 +14,12 @@
         "categories": {
             "auth": {
                 "reactappsyncblog15345c9e": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "dn4uwnttkscrp",
+                    "type": "cicd"
+                }
             }
         }
     }
